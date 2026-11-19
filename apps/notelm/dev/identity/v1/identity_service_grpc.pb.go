@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.2
 // - protoc             (unknown)
-// source: apps/notelm/admin/identity/v1/identity_service.proto
+// source: apps/notelm/dev/identity/v1/identity_service.proto
 
 package identityv1
 
@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	IdentityService_GetUser_FullMethodName = "/apps.notelm.admin.identity.v1.IdentityService/GetUser"
+	IdentityService_GetUser_FullMethodName       = "/apps.notelm.dev.identity.v1.IdentityService/GetUser"
+	IdentityService_SetUserStatus_FullMethodName = "/apps.notelm.dev.identity.v1.IdentityService/SetUserStatus"
 )
 
 // IdentityServiceClient is the client API for IdentityService service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type IdentityServiceClient interface {
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
+	SetUserStatus(ctx context.Context, in *SetUserStatusRequest, opts ...grpc.CallOption) (*SetUserStatusResponse, error)
 }
 
 type identityServiceClient struct {
@@ -47,11 +49,22 @@ func (c *identityServiceClient) GetUser(ctx context.Context, in *GetUserRequest,
 	return out, nil
 }
 
+func (c *identityServiceClient) SetUserStatus(ctx context.Context, in *SetUserStatusRequest, opts ...grpc.CallOption) (*SetUserStatusResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SetUserStatusResponse)
+	err := c.cc.Invoke(ctx, IdentityService_SetUserStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // IdentityServiceServer is the server API for IdentityService service.
 // All implementations must embed UnimplementedIdentityServiceServer
 // for forward compatibility.
 type IdentityServiceServer interface {
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
+	SetUserStatus(context.Context, *SetUserStatusRequest) (*SetUserStatusResponse, error)
 	mustEmbedUnimplementedIdentityServiceServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedIdentityServiceServer struct{}
 
 func (UnimplementedIdentityServiceServer) GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetUser not implemented")
+}
+func (UnimplementedIdentityServiceServer) SetUserStatus(context.Context, *SetUserStatusRequest) (*SetUserStatusResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SetUserStatus not implemented")
 }
 func (UnimplementedIdentityServiceServer) mustEmbedUnimplementedIdentityServiceServer() {}
 func (UnimplementedIdentityServiceServer) testEmbeddedByValue()                         {}
@@ -104,18 +120,40 @@ func _IdentityService_GetUser_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _IdentityService_SetUserStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetUserStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityServiceServer).SetUserStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IdentityService_SetUserStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityServiceServer).SetUserStatus(ctx, req.(*SetUserStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // IdentityService_ServiceDesc is the grpc.ServiceDesc for IdentityService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var IdentityService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "apps.notelm.admin.identity.v1.IdentityService",
+	ServiceName: "apps.notelm.dev.identity.v1.IdentityService",
 	HandlerType: (*IdentityServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetUser",
 			Handler:    _IdentityService_GetUser_Handler,
 		},
+		{
+			MethodName: "SetUserStatus",
+			Handler:    _IdentityService_SetUserStatus_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "apps/notelm/admin/identity/v1/identity_service.proto",
+	Metadata: "apps/notelm/dev/identity/v1/identity_service.proto",
 }
