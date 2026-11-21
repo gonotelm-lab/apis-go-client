@@ -24,6 +24,55 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type Identity_Provider int32
+
+const (
+	Identity_PROVIDER_UNSPECIFIED Identity_Provider = 0
+	Identity_PROVIDER_GITHUB      Identity_Provider = 1
+	Identity_PROVIDER_GOOGLE      Identity_Provider = 2
+)
+
+// Enum value maps for Identity_Provider.
+var (
+	Identity_Provider_name = map[int32]string{
+		0: "PROVIDER_UNSPECIFIED",
+		1: "PROVIDER_GITHUB",
+		2: "PROVIDER_GOOGLE",
+	}
+	Identity_Provider_value = map[string]int32{
+		"PROVIDER_UNSPECIFIED": 0,
+		"PROVIDER_GITHUB":      1,
+		"PROVIDER_GOOGLE":      2,
+	}
+)
+
+func (x Identity_Provider) Enum() *Identity_Provider {
+	p := new(Identity_Provider)
+	*p = x
+	return p
+}
+
+func (x Identity_Provider) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Identity_Provider) Descriptor() protoreflect.EnumDescriptor {
+	return file_apps_notelm_dev_identity_v1_user_proto_enumTypes[0].Descriptor()
+}
+
+func (Identity_Provider) Type() protoreflect.EnumType {
+	return &file_apps_notelm_dev_identity_v1_user_proto_enumTypes[0]
+}
+
+func (x Identity_Provider) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Identity_Provider.Descriptor instead.
+func (Identity_Provider) EnumDescriptor() ([]byte, []int) {
+	return file_apps_notelm_dev_identity_v1_user_proto_rawDescGZIP(), []int{0, 0}
+}
+
 type User_Status int32
 
 const (
@@ -57,11 +106,11 @@ func (x User_Status) String() string {
 }
 
 func (User_Status) Descriptor() protoreflect.EnumDescriptor {
-	return file_apps_notelm_dev_identity_v1_user_proto_enumTypes[0].Descriptor()
+	return file_apps_notelm_dev_identity_v1_user_proto_enumTypes[1].Descriptor()
 }
 
 func (User_Status) Type() protoreflect.EnumType {
-	return &file_apps_notelm_dev_identity_v1_user_proto_enumTypes[0]
+	return &file_apps_notelm_dev_identity_v1_user_proto_enumTypes[1]
 }
 
 func (x User_Status) Number() protoreflect.EnumNumber {
@@ -70,7 +119,102 @@ func (x User_Status) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use User_Status.Descriptor instead.
 func (User_Status) EnumDescriptor() ([]byte, []int) {
-	return file_apps_notelm_dev_identity_v1_user_proto_rawDescGZIP(), []int{0, 0}
+	return file_apps_notelm_dev_identity_v1_user_proto_rawDescGZIP(), []int{1, 0}
+}
+
+// Identity 账号已绑定的一条三方身份
+type Identity struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// 绑定记录 id（解绑时用）
+	Id       string            `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Provider Identity_Provider `protobuf:"varint,2,opt,name=provider,proto3,enum=apps.notelm.dev.identity.v1.Identity_Provider" json:"provider,omitempty"`
+	// 三方侧 subject（全局唯一键的一部分）
+	Subject               string                 `protobuf:"bytes,3,opt,name=subject,proto3" json:"subject,omitempty"`
+	ProviderEmail         string                 `protobuf:"bytes,4,opt,name=provider_email,json=providerEmail,proto3" json:"provider_email,omitempty"`
+	ProviderEmailVerified bool                   `protobuf:"varint,5,opt,name=provider_email_verified,json=providerEmailVerified,proto3" json:"provider_email_verified,omitempty"`
+	BoundAt               *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=bound_at,json=boundAt,proto3" json:"bound_at,omitempty"`
+	LastLoginAt           *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=last_login_at,json=lastLoginAt,proto3" json:"last_login_at,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
+}
+
+func (x *Identity) Reset() {
+	*x = Identity{}
+	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Identity) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Identity) ProtoMessage() {}
+
+func (x *Identity) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Identity.ProtoReflect.Descriptor instead.
+func (*Identity) Descriptor() ([]byte, []int) {
+	return file_apps_notelm_dev_identity_v1_user_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *Identity) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Identity) GetProvider() Identity_Provider {
+	if x != nil {
+		return x.Provider
+	}
+	return Identity_PROVIDER_UNSPECIFIED
+}
+
+func (x *Identity) GetSubject() string {
+	if x != nil {
+		return x.Subject
+	}
+	return ""
+}
+
+func (x *Identity) GetProviderEmail() string {
+	if x != nil {
+		return x.ProviderEmail
+	}
+	return ""
+}
+
+func (x *Identity) GetProviderEmailVerified() bool {
+	if x != nil {
+		return x.ProviderEmailVerified
+	}
+	return false
+}
+
+func (x *Identity) GetBoundAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.BoundAt
+	}
+	return nil
+}
+
+func (x *Identity) GetLastLoginAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.LastLoginAt
+	}
+	return nil
 }
 
 type User struct {
@@ -83,13 +227,14 @@ type User struct {
 	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt       *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	HasPassword     bool                   `protobuf:"varint,8,opt,name=has_password,json=hasPassword,proto3" json:"has_password,omitempty"`
+	Identities      []*Identity            `protobuf:"bytes,9,rep,name=identities,proto3" json:"identities,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
 
 func (x *User) Reset() {
 	*x = User{}
-	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[0]
+	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -101,7 +246,7 @@ func (x *User) String() string {
 func (*User) ProtoMessage() {}
 
 func (x *User) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[0]
+	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -114,7 +259,7 @@ func (x *User) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use User.ProtoReflect.Descriptor instead.
 func (*User) Descriptor() ([]byte, []int) {
-	return file_apps_notelm_dev_identity_v1_user_proto_rawDescGZIP(), []int{0}
+	return file_apps_notelm_dev_identity_v1_user_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *User) GetId() string {
@@ -173,6 +318,13 @@ func (x *User) GetHasPassword() bool {
 	return false
 }
 
+func (x *User) GetIdentities() []*Identity {
+	if x != nil {
+		return x.Identities
+	}
+	return nil
+}
+
 type GetUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -182,7 +334,7 @@ type GetUserRequest struct {
 
 func (x *GetUserRequest) Reset() {
 	*x = GetUserRequest{}
-	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[1]
+	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -194,7 +346,7 @@ func (x *GetUserRequest) String() string {
 func (*GetUserRequest) ProtoMessage() {}
 
 func (x *GetUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[1]
+	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -207,7 +359,7 @@ func (x *GetUserRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetUserRequest.ProtoReflect.Descriptor instead.
 func (*GetUserRequest) Descriptor() ([]byte, []int) {
-	return file_apps_notelm_dev_identity_v1_user_proto_rawDescGZIP(), []int{1}
+	return file_apps_notelm_dev_identity_v1_user_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *GetUserRequest) GetId() string {
@@ -226,7 +378,7 @@ type GetUserResponse struct {
 
 func (x *GetUserResponse) Reset() {
 	*x = GetUserResponse{}
-	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[2]
+	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -238,7 +390,7 @@ func (x *GetUserResponse) String() string {
 func (*GetUserResponse) ProtoMessage() {}
 
 func (x *GetUserResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[2]
+	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -251,7 +403,7 @@ func (x *GetUserResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetUserResponse.ProtoReflect.Descriptor instead.
 func (*GetUserResponse) Descriptor() ([]byte, []int) {
-	return file_apps_notelm_dev_identity_v1_user_proto_rawDescGZIP(), []int{2}
+	return file_apps_notelm_dev_identity_v1_user_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *GetUserResponse) GetUser() *User {
@@ -271,7 +423,7 @@ type SetUserStatusRequest struct {
 
 func (x *SetUserStatusRequest) Reset() {
 	*x = SetUserStatusRequest{}
-	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[3]
+	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -283,7 +435,7 @@ func (x *SetUserStatusRequest) String() string {
 func (*SetUserStatusRequest) ProtoMessage() {}
 
 func (x *SetUserStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[3]
+	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -296,7 +448,7 @@ func (x *SetUserStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetUserStatusRequest.ProtoReflect.Descriptor instead.
 func (*SetUserStatusRequest) Descriptor() ([]byte, []int) {
-	return file_apps_notelm_dev_identity_v1_user_proto_rawDescGZIP(), []int{3}
+	return file_apps_notelm_dev_identity_v1_user_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *SetUserStatusRequest) GetId() string {
@@ -322,7 +474,7 @@ type SetUserStatusResponse struct {
 
 func (x *SetUserStatusResponse) Reset() {
 	*x = SetUserStatusResponse{}
-	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[4]
+	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -334,7 +486,7 @@ func (x *SetUserStatusResponse) String() string {
 func (*SetUserStatusResponse) ProtoMessage() {}
 
 func (x *SetUserStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[4]
+	mi := &file_apps_notelm_dev_identity_v1_user_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -347,7 +499,7 @@ func (x *SetUserStatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetUserStatusResponse.ProtoReflect.Descriptor instead.
 func (*SetUserStatusResponse) Descriptor() ([]byte, []int) {
-	return file_apps_notelm_dev_identity_v1_user_proto_rawDescGZIP(), []int{4}
+	return file_apps_notelm_dev_identity_v1_user_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *SetUserStatusResponse) GetUser() *User {
@@ -361,7 +513,19 @@ var File_apps_notelm_dev_identity_v1_user_proto protoreflect.FileDescriptor
 
 const file_apps_notelm_dev_identity_v1_user_proto_rawDesc = "" +
 	"\n" +
-	"&apps/notelm/dev/identity/v1/user.proto\x12\x1bapps.notelm.dev.identity.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb5\x03\n" +
+	"&apps/notelm/dev/identity/v1/user.proto\x12\x1bapps.notelm.dev.identity.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa6\x03\n" +
+	"\bIdentity\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12J\n" +
+	"\bprovider\x18\x02 \x01(\x0e2..apps.notelm.dev.identity.v1.Identity.ProviderR\bprovider\x12\x18\n" +
+	"\asubject\x18\x03 \x01(\tR\asubject\x12%\n" +
+	"\x0eprovider_email\x18\x04 \x01(\tR\rproviderEmail\x126\n" +
+	"\x17provider_email_verified\x18\x05 \x01(\bR\x15providerEmailVerified\x125\n" +
+	"\bbound_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\aboundAt\x12>\n" +
+	"\rlast_login_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\vlastLoginAt\"N\n" +
+	"\bProvider\x12\x18\n" +
+	"\x14PROVIDER_UNSPECIFIED\x10\x00\x12\x13\n" +
+	"\x0fPROVIDER_GITHUB\x10\x01\x12\x13\n" +
+	"\x0fPROVIDER_GOOGLE\x10\x02\"\xfc\x03\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1a\n" +
 	"\bnickname\x18\x02 \x01(\tR\bnickname\x12F\n" +
@@ -372,7 +536,10 @@ const file_apps_notelm_dev_identity_v1_user_proto_rawDesc = "" +
 	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
 	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12!\n" +
-	"\fhas_password\x18\b \x01(\bR\vhasPassword\"F\n" +
+	"\fhas_password\x18\b \x01(\bR\vhasPassword\x12E\n" +
+	"\n" +
+	"identities\x18\t \x03(\v2%.apps.notelm.dev.identity.v1.IdentityR\n" +
+	"identities\"F\n" +
 	"\x06Status\x12\x16\n" +
 	"\x12STATUS_UNSPECIFIED\x10\x00\x12\x11\n" +
 	"\rSTATUS_ACTIVE\x10\x01\x12\x11\n" +
@@ -400,30 +567,36 @@ func file_apps_notelm_dev_identity_v1_user_proto_rawDescGZIP() []byte {
 	return file_apps_notelm_dev_identity_v1_user_proto_rawDescData
 }
 
-var file_apps_notelm_dev_identity_v1_user_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_apps_notelm_dev_identity_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_apps_notelm_dev_identity_v1_user_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_apps_notelm_dev_identity_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_apps_notelm_dev_identity_v1_user_proto_goTypes = []any{
-	(User_Status)(0),              // 0: apps.notelm.dev.identity.v1.User.Status
-	(*User)(nil),                  // 1: apps.notelm.dev.identity.v1.User
-	(*GetUserRequest)(nil),        // 2: apps.notelm.dev.identity.v1.GetUserRequest
-	(*GetUserResponse)(nil),       // 3: apps.notelm.dev.identity.v1.GetUserResponse
-	(*SetUserStatusRequest)(nil),  // 4: apps.notelm.dev.identity.v1.SetUserStatusRequest
-	(*SetUserStatusResponse)(nil), // 5: apps.notelm.dev.identity.v1.SetUserStatusResponse
-	(*timestamppb.Timestamp)(nil), // 6: google.protobuf.Timestamp
+	(Identity_Provider)(0),        // 0: apps.notelm.dev.identity.v1.Identity.Provider
+	(User_Status)(0),              // 1: apps.notelm.dev.identity.v1.User.Status
+	(*Identity)(nil),              // 2: apps.notelm.dev.identity.v1.Identity
+	(*User)(nil),                  // 3: apps.notelm.dev.identity.v1.User
+	(*GetUserRequest)(nil),        // 4: apps.notelm.dev.identity.v1.GetUserRequest
+	(*GetUserResponse)(nil),       // 5: apps.notelm.dev.identity.v1.GetUserResponse
+	(*SetUserStatusRequest)(nil),  // 6: apps.notelm.dev.identity.v1.SetUserStatusRequest
+	(*SetUserStatusResponse)(nil), // 7: apps.notelm.dev.identity.v1.SetUserStatusResponse
+	(*timestamppb.Timestamp)(nil), // 8: google.protobuf.Timestamp
 }
 var file_apps_notelm_dev_identity_v1_user_proto_depIdxs = []int32{
-	6, // 0: apps.notelm.dev.identity.v1.User.email_verified_at:type_name -> google.protobuf.Timestamp
-	0, // 1: apps.notelm.dev.identity.v1.User.status:type_name -> apps.notelm.dev.identity.v1.User.Status
-	6, // 2: apps.notelm.dev.identity.v1.User.created_at:type_name -> google.protobuf.Timestamp
-	6, // 3: apps.notelm.dev.identity.v1.User.updated_at:type_name -> google.protobuf.Timestamp
-	1, // 4: apps.notelm.dev.identity.v1.GetUserResponse.user:type_name -> apps.notelm.dev.identity.v1.User
-	0, // 5: apps.notelm.dev.identity.v1.SetUserStatusRequest.status:type_name -> apps.notelm.dev.identity.v1.User.Status
-	1, // 6: apps.notelm.dev.identity.v1.SetUserStatusResponse.user:type_name -> apps.notelm.dev.identity.v1.User
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	0,  // 0: apps.notelm.dev.identity.v1.Identity.provider:type_name -> apps.notelm.dev.identity.v1.Identity.Provider
+	8,  // 1: apps.notelm.dev.identity.v1.Identity.bound_at:type_name -> google.protobuf.Timestamp
+	8,  // 2: apps.notelm.dev.identity.v1.Identity.last_login_at:type_name -> google.protobuf.Timestamp
+	8,  // 3: apps.notelm.dev.identity.v1.User.email_verified_at:type_name -> google.protobuf.Timestamp
+	1,  // 4: apps.notelm.dev.identity.v1.User.status:type_name -> apps.notelm.dev.identity.v1.User.Status
+	8,  // 5: apps.notelm.dev.identity.v1.User.created_at:type_name -> google.protobuf.Timestamp
+	8,  // 6: apps.notelm.dev.identity.v1.User.updated_at:type_name -> google.protobuf.Timestamp
+	2,  // 7: apps.notelm.dev.identity.v1.User.identities:type_name -> apps.notelm.dev.identity.v1.Identity
+	3,  // 8: apps.notelm.dev.identity.v1.GetUserResponse.user:type_name -> apps.notelm.dev.identity.v1.User
+	1,  // 9: apps.notelm.dev.identity.v1.SetUserStatusRequest.status:type_name -> apps.notelm.dev.identity.v1.User.Status
+	3,  // 10: apps.notelm.dev.identity.v1.SetUserStatusResponse.user:type_name -> apps.notelm.dev.identity.v1.User
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_apps_notelm_dev_identity_v1_user_proto_init() }
@@ -436,8 +609,8 @@ func file_apps_notelm_dev_identity_v1_user_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_notelm_dev_identity_v1_user_proto_rawDesc), len(file_apps_notelm_dev_identity_v1_user_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   5,
+			NumEnums:      2,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
